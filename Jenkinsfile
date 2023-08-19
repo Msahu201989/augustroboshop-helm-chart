@@ -14,8 +14,8 @@ pipeline{
           git branch: 'main', url: 'https://github.com/Msahu201989/${COMPONENET}'
 
 
-
-        }
+    }
+    }
     }
      stage('Helm Deploy') {
           steps {
@@ -23,6 +23,6 @@ pipeline{
               helm install ${component} . -f APP/helm/prod.yml
             '''
           }
-        }
-     }
-   }
+      }
+ }
+ }
