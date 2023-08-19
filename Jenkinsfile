@@ -1,28 +1,32 @@
-pipeline{
- agent any
+pipeline {
+  agent any
 
-    parameters {
-      string(name: 'component', defaultValue: '', description: 'Component Name')
-      string(name: 'appVersion', defaultValue: '', description: 'Component appVersion')
-    }
+  parameters {
+    string(name: 'component', defaultValue: '', description: 'Component Name')
+    string(name: 'appVersion', defaultValue: '', description: 'Component appVersion')
+  }
 
-  satges {
+  stages {
 
-    stage('checkout Application Code') {
+    stage('CheckOut Application Code') {
       steps {
         dir('APP') {
-          git branch: 'main', url: 'https://github.com/Msahu201989/${COMPONENET}'
-
-
-    }
-    }
-    }
-     stage('Helm Deploy') {
-          steps {
-            sh '''
-              helm install ${component} . -f APP/helm/prod.yml
-            '''
-          }
+          git branch: 'main', url: "https://github.com/Msahu201989/${component}"
+        }
       }
- }
- }
+    }
+
+    stage('Helm Deploy') {
+      steps {
+        sh '''
+          helm upgrade -i ${component} . -f APP/helm/prod.yml --set-string componentName=${component} --set-string appVersion=${appVersion}
+        '''
+      }
+    }
+
+
+  }
+
+}
+
+
